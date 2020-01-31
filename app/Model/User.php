@@ -26,18 +26,49 @@
 			 	'Not empty'=>array(
 			 		 'rule'=>'notBlank',
 			 		 'message'=>'Please enter your password confirmation'
-			 	),
-			 	'Match passwords'=>array(
-			 		 'rule'=>'matchPasswords',
-			 		 'message'=>'Your password do not match'
 			 	)
 			 ),
 			 'password_confirmation' => array(
 			 	'Not empty'=>array(
 			 		 'rule'=>'notBlank',
 			 		 'message'=>'Please enter your password confirmation'
+				 ),
+				'Match passwords'=>array(
+					'rule'=>'matchPasswords',
+					'message'=>'Your password do not match'
+			   	)
+			 ),
+			 'gender' => array(
+			 	'Not empty'=>array(
+			 		 'rule'=>'notBlank',
+			 		 'message'=>'Please select a gender!'
 			 	)
-			 )
+			 ),
+			 'hubby' => array(
+			 	'Not empty'=>array(
+			 		 'rule'=>'notBlank',
+			 		 'message'=>'Please input your hubbies!'
+			 	)
+			 ),
+			 'birthdate' => array(
+			 	'Not empty'=>array(
+			 		 'rule'=>'notBlank',
+			 		 'message'=>'Please select your birthdate!'
+			 	)
+			 ),
+			 'image' => array(
+			 	'Not empty'=>array(
+			 		 'rule'=>'notBlank',
+			 		 'message'=>'Please select your birthdate!'
+			 	)
+			 ),
+			 'old_password' => array(
+				'Not empty'=>array(
+					 'rule'=>'notBlank',
+					 'message'=>'Please input your current password'
+				)
+			),
+
 
 		);
 

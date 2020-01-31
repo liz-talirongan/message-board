@@ -5,4 +5,10 @@
 				echo $this->Form->input('password');
 				echo $this->Form->end('Login');
 
+			
+
+				echo $this->Html->link('No account yet, click here to register ',array('action' => 'register'));
+
 ?>
+
+

@@ -22,40 +22,55 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $this->fetch('title'); ?>
+		Message Board
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
-
-
+		 //echo $this->Html->css('details');
 		
-
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 
-		$cbunny = array(
-    'APP_PATH' => Router::url('/',true)
-	);
-
-	echo $this->Html->scriptBlock('var CbunnyObj = ' . $this->Js->object($cbunny) . ';');
 
 	?>
+
+	
 </head>
 <body>
 	<div id="container">
 
-		<div id="header" style="text-align:right">
+		<div id="header">
 			<?php if($logged_in): ?>
-							Welcome <?php echo $current_user['name'];?>  <?php echo $this->Html->link('Logout',array('controller'=>'users','action'=>'logout')) ?>
+				
+				<p>
+					<span style="float:right">
+						Welcome <?php echo $current_user['name'];?>  , <?php echo $this->Html->link('Logout',array('controller'=>'users','action'=>'logout')) ?>
+					</span>
+
+					<span>
+						<?php echo $this->Html->link('|PROFILE|',array('controller' => 'users','action' => 'profile',AuthComponent::user('id'))) ?>
+
+						<?php echo $this->Html->link('|MESSAGES|',array('controller' => 'messages','action' => 'index')) ?>
+
+					</span>
+
+				</p>
+
 			<?php else: ?>
-							<?php echo $this->Html->link('Login',array('controller'=>'users','action'=>'login')) ?>
+				
+				<p style="text-align:right">
+					
+					<?php echo $this->Html->link('Login',array('controller'=>'users','action'=>'login')) ?>
+
+				</p>
+
 			<?php endif; ?>
 		</div>
+
 			
 		
 		<div id="content">
@@ -63,6 +78,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<?php echo $this->Flash->render(); ?>
 
 			<?php echo $this->fetch('content'); ?>
+
+			<?php echo $this->Js->writeBuffer(); ?>
 		</div>
 	</div>
 	
