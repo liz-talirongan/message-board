@@ -16,22 +16,22 @@
 				<?php echo $this->Form->create('Message'); ?>	
 
 				<fieldset>
-						<legend>New Message</legend>
+								<legend>New Message</legend>
 			
 
-						<?php 	
+								<?php 	
 
-								echo $this->Form->create('Message');
+												echo $this->Form->create('Message');
 
-								echo $this->Form->select('recipient',null,array(
-									'id' => 'selUser','style' => 'width:300px',
-									
-								));
+												echo $this->Form->select('recipient',null,array(
+													'id' => 'selUser','style' => 'width:300px',
+													
+												));
 
-								echo $this->Form->input('content');
-								echo $this->Form->end('Send Message');
+												echo $this->Form->input('content');
+												echo $this->Form->end('Send Message');
 
-						?>
+								?>
 
 				</fieldset>
 

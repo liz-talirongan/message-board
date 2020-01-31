@@ -2,15 +2,12 @@
 
       echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
 
-    
-
-
+ 
 ?>
 
 <?php $arraySize = sizeof($messages_list_all); ?>
 
-
- <div id='errorMessage' style="color:red;font-size:18px;"></div>
+<div id='errorMessage' style="color:red;font-size:18px;"></div>
 
 <div class='users'>
 
@@ -18,12 +15,11 @@
 
 	<div style='float:right'>
 
+					<input type="hidden" value="<?php echo $meid ?>" id='receiver_id'>
 
-			<input type="hidden" value="<?php echo $meid ?>" id='receiver_id'>
+					<textarea id="replyMessage" placeholder='Message' style='width:500px;'></textarea> 
 
-			<textarea id="replyMessage" placeholder='Message' style='width:500px;'></textarea> 
-
-			<button id="btn_to_submit">Reply Message </button>
+					<button id="btn_to_submit">Reply Message </button>
 
 	</div>
 
@@ -43,91 +39,91 @@
 
 									<?php if($message['Message']['from_id'] == AuthComponent::user('id')): ?>
 
-											<img class="img_btn" data-id="<?php echo $message['Message']['from_id'] ?>" 
-												src="<?php echo $this->webroot; ?>/img/profile/<?php echo $message['SenderJoin']['simage'] ?>"  
-												style="width:100px;height: 100px;float:left;"
-											/> 
+														<img class="img_btn" data-id="<?php echo $message['Message']['from_id'] ?>" 
+															src="<?php echo $this->webroot; ?>/img/profile/<?php echo $message['SenderJoin']['simage'] ?>"  
+															style="width:100px;height: 100px;float:left;"
+														/> 
 
-											<p 
-												style="margin:3%;display:inline-block;width:inherit;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
-												class="message_div" 
-												fad-id="<?php echo $message['Message']['id'] ?>"
-											>
-												<?php echo $message['Message']['content']; ?>
+														<p 
+															style="margin:3%;display:inline-block;width:inherit;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+															class="message_div" 
+															fad-id="<?php echo $message['Message']['id'] ?>"
+														>
+															<?php echo $message['Message']['content']; ?>
 
-												<br>
-												
-												
+															<br>
+															
+															
 
-												<?php if ($sLength > 300): ?>
+															<?php if ($sLength > 300): ?>
 
-													<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>">Read more </a>
-													<a class="less" href="#"  style="display:none;" data-id="<?php echo $message['Message']['id'] ?>">Show less</a>
+																<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>">Read more </a>
+																<a class="less" href="#"  style="display:none;" data-id="<?php echo $message['Message']['id'] ?>">Show less</a>
 
-												<?php endif; ?>
+															<?php endif; ?>
 
-											</p>
+														</p>
 
-											<hr>
+														<hr>
 
-											<span style="text-align:right;margin-right:10px;float:right;margin-top:1.5%;">
-												<?php 
-													echo date("Y/m/d H:i a", strtotime($message['Message']['created'])); 
-												?>
-											</span>
+														<span style="text-align:right;margin-right:10px;float:right;margin-top:1.5%;">
+															<?php 
+																echo date("Y/m/d H:i a", strtotime($message['Message']['created'])); 
+															?>
+														</span>
 
-											<button 
-													class="btn_user_sender" 
-													data-id="<?php echo $message['Message']['id'] ?>"
-													style="display:inline-block;margin-left:2%;margin-top:1.5%;margin-bottom: 1%;"
-											>
-													Delete Message 
-											</button>
+														<button 
+																class="btn_user_sender" 
+																data-id="<?php echo $message['Message']['id'] ?>"
+																style="display:inline-block;margin-left:2%;margin-top:1.5%;margin-bottom: 1%;"
+														>
+																Delete Message 
+														</button>
 
 									<?php else: ?>
-										<img class="img_btn" data-id="<?php echo $message['SenderJoin']['sid'] ?>" 
-												src="<?php echo $this->webroot; ?>/img/profile/<?php echo $message['SenderJoin']['simage'] ?>"  
-												style="width:100px;height: 100px;float:right;"
-											/> 
+														<img class="img_btn" data-id="<?php echo $message['SenderJoin']['sid'] ?>" 
+															src="<?php echo $this->webroot; ?>/img/profile/<?php echo $message['SenderJoin']['simage'] ?>"  
+															style="width:100px;height: 100px;float:right;"
+														/> 
 
-											<p 
-												style="margin-top:3%;display:inline-block;width:inherit;text-align:right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
-												class="message_div" 
-												receiver-id="<?php echo $message['UserJoin']['rid'] ?>"
-												sender-id="<?php echo $message['SenderJoin']['sid'] ?>"	
-											>
-												<?php echo $message['Message']['content']; ?>
-
-
-
-												<?php if ($sLength > 300): ?>
-
-														<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>" style="text-align:left;display:block;margin:3%;">Read more
-														 </a>
-												
+														<p 
+															style="margin-top:3%;display:inline-block;width:inherit;text-align:right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+															class="message_div" 
+															receiver-id="<?php echo $message['UserJoin']['rid'] ?>"
+															sender-id="<?php echo $message['SenderJoin']['sid'] ?>"	
+														>
+															<?php echo $message['Message']['content']; ?>
 
 
 
-												<?php endif; ?>
+															<?php if ($sLength > 300): ?>
 
-											</p>
+																	<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>" style="text-align:left;display:block;margin:3%;">Read more
+																	 </a>
+															
 
 
-											<hr>
 
-											<span style="text-align:left;margin-left:10px;float:left;margin-top:1.5%;">
-												<?php 
-													echo date("Y/m/d H:i a", strtotime($message['Message']['created'])); 
-												?>
-											</span>
+															<?php endif; ?>
 
-											<button 
-													class="btn_user_sender" 
-													data-id="<?php echo $message['Message']['id'] ?>"
-													style="display:inline-block;margin-right:2%;margin-top:1.5%;float:right;margin-bottom: 1%"
-											>
-													Delete Message 
-											</button>
+														</p>
+
+
+														<hr>
+
+														<span style="text-align:left;margin-left:10px;float:left;margin-top:1.5%;">
+															<?php 
+																echo date("Y/m/d H:i a", strtotime($message['Message']['created'])); 
+															?>
+														</span>
+
+														<button 
+																class="btn_user_sender" 
+																data-id="<?php echo $message['Message']['id'] ?>"
+																style="display:inline-block;margin-right:2%;margin-top:1.5%;float:right;margin-bottom: 1%"
+														>
+																Delete Message 
+														</button>
 
 									<?php endif ?>
 								
@@ -162,324 +158,251 @@
 
 <script type='text/javascript'>
 
-	$("#btn_to_submit").on('click',function() {
-		var message = $('#replyMessage').val(); 
-		var receiver = $('#receiver_id').val();
-
-		if(message == "")
-		{
-			
-
-			$(errorMessage).append('<p style="float:right;margin-right:10%;">Please input a reply message! </p>');
-
-			//$('#errorMessage').append($('#errorMessage').html("<p>Please input a reply message</p>"));
-		}else{
-
-			$.ajax({
-					    url:'/MessageBoard/messages/replyMessage',
-					    type:'POST',
-					    data:{
-					      "replyMessage":message,
-					      "receiverId":receiver
-					    },
-					 	success:function(data)  
-		                {  
-
-		                	window.location.reload();
-		                }  
-			});
-		}
-
-
-
-
-	});
-
-
-	
 
 	$(document).ready(function () {
 
 
-		var start = parseInt($('#startSql').val());
+					var start = parseInt($('#startSql').val());
 
-		var limit = 10;
+					var limit = 10;
 
-		 $("#btn-showMore").on('click',function() {
+					$("#btn_to_submit").on('click',function() {
 
-		 		
+									var message = $('#replyMessage').val(); 
+									var receiver = $('#receiver_id').val();
 
-		 		var receiverId = $('#receiver_id').val();
-
-				
-							$.ajax({
-									url:'/MessageBoard/messages/loadMoreMessageDetails',
-									type:'POST',
-									dataType: 'JSON',
-									data: {
-										"start":start,
-										"limit":limit,
-										"receiverId":receiverId
-									},
-									success:function(response)  
-									{  
-												var len = response.length;
-
-												
-												start = start + limit;	
-
+									if(message == "")
+									{
 										
+										$(errorMessage).append('<p style="float:right;margin-right:10%;">Please input a reply message! </p>');
 
-												$('#startSql').val(start);
+									}else{
 
-												if(len == 0){
-													$('div #btn-showMore').css({
-														'display':'none'
-													});
+										$.ajax({
+												    url:'/MessageBoard/messages/replyMessage',
+												    type:'POST',
+												    data:{
+												      "replyMessage":message,
+												      "receiverId":receiver
+												    },
+												 	success:function(data)  
+									                {  
 
-													$(errorShowMessage).append('<p style="display:block">No more message to load! </p>');
-
-												}
-
-												for(var i =0 ; i < len ; i++){
-
-													var str = "";
-													var messageContent = response[i].Message.content;
-													var messageLength = messageContent.length;
-													var messageId = response[i].Message.id;
-
-													if (receiverId != response[i].Message.from_id){
-														str = str + 
-														'<li style="height:auto;width:70%;border:1px solid black;margin-top:1%;margin-bottom:1%;display:inline-block;margin-left:0px;margin-right:0px"'
-														+ 'class="messageDiv"' + 'fade-id="' + messageId + '">' +
-														'<img class="img_btn"' + "data-id='"+response[i].SenderJoin.sid+"'" + 
-
-														
-														//'src="/MessageBoard/img/profile/default.jpg"' + 
-
-														'src="/MessageBoard/img/profile/' + response[i].SenderJoin.simage + '" '  + 
-
-														"style='width:100px;height:100px;float:left;'>" + 
-
-														'<p style="margin:3%;display:inline-block;width:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" class="message_div"' + 
-
-														'fade-id="' + messageId + '">' + response[i].Message.content + '';
-
-
-														if(messageLength > 300){
-																str = str +  '<a class="more" href="#" ' + 
-																'data-id="' + messageId + '"' + ' style="text-align:left;display:block;margin:3%;"' + '> Read more..</a>';
-														}
-
-
-														str = str + '</p>';
-
-														str = str + 
-
-														'<hr>' + '<span style="text-align:right;margin-right:10px;float:right;margin-top:1.5%;">' + response[i].Message.created + '</span>' + 
-
-														'<button class="btn_user_sender"' + ' data-id="' + response[i].Message.id + '"' + 
-
-														'style="display:inline-block;margin-left:2%;margin-top:1.5%;margin-bottom:1%;">' + 'Delete Message </button>';
-
-														str = str + '</li>'
-
-
-													}else{
-														
-
-														str = str + 
-
-														'<li style="height:auto;width:70%;border:1px solid black;margin-top:1%;margin-bottom:1%;display:inline-block;margin-left:0px;margin-right:0px"'
-														+ 'class="messageDiv specialLiRight"' + 'fade-id="' + messageId + '">' +
-														'<img class="img_btn"' + "data-id='"+receiverId+"'" + 
-
-
-														//'src="/MessageBoard/img/profile/default.jpg"' + 
-
-														'src="/MessageBoard/img/profile/' + response[i].SenderJoin.simage + '" '  + 
-
-														"style='width:100px;height:100px;float:right;'>" + 
-
-														'<p style="margin-top:3%;display:inline-block;width:inherit;text-align:right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"class="message_div"' + 
-
-														'fade-id="' + messageId + '">' + response[i].Message.content + '</p>';
-
-														 if(messageLength > 300){
-
-															str = str +  '<a class="more" href="#" ' + 'data-id="' + messageId + '"' + 
-															' style="text-align:left;display:inline-block;margin:3%;"' + 
-															'> Read more..</a>';
-														 }
-
-
-														 str = str + 
-														 '<hr>' + '<span style="text-align:left;margin-left:10px;float:left;margin-top:1.5%;">' +
-														 	 response[i].Message.created + '</span>' + 
-														'<button class="btn_user_sender"' + ' data-id="' + response[i].Message.id + '"' + 
-
-														'style="display:inline-block;margin-right:2%;margin-top:1.5%;float:right;margin-bottom:1%;">' + 'Delete Message </button>'
-
-														str = str + '</li>';
-													}
-
-													$("#userLists").append(str);
-
-												}
-
-
+									                	window.location.reload();
+									                }  
+										});
 									}
-															
-							});
 
-
-
-
-        });
-
-
-	
-
-
-		$("#userLists").on('click','.btn_user_sender',function(ev) {
-
-
-		
-
-			var message_id = $(this).attr('data-id');
-
-			var searchDiv = $("div").find("[fade-id='" + message_id + "']"); 
-
-			 $.ajax({
-					url:'/MessageBoard/messages/deleteSingleMessage',
-					    type:'POST',
-					    data:{
-				      "messageId":message_id,
-				    },
-				 	success:function(data)  
-			        {  	
-
-			        	searchDiv.fadeOut();
-			           	//window.location.reload();
-			        }  
-			});
-
-
-		});
-
-
-
-		// $(".img_btn").on('click',function() {
-
-					
-				
-
-		// 	var user_id = $(this).attr('data-id');
-
-		// 	document.location.href = "/MessageBoard/users/profile/" + user_id;
-
-
-
-
-		// });
-
-
-		$("#userLists").on('click','.img_btn',function() {
-
-					
-	
-			//console.log("i was clickedf1");
-
-
-			var user_id = $(this).attr('data-id');
-
-
-			document.location.href = "/MessageBoard/users/profile/" + user_id;
-
-
-
-
-		});
-
-
-		//$("#userLists").on('click','.more',function(e) {
-		$("#userLists").on('click','.more',function(e) {
-
-				 e.stopPropagation();
-		
-				var message_id = $(this).attr('data-id');
-
-				var searchParagraph = $("div").find("[fade-id='" + message_id + "']"); 
-			
-
-				var searchBtn = $('a').find("[data-id='" + message_id + "']"); 
-
-
-
-				searchParagraph.children('p').css({
-			 		'height': 'auto',
-			        //'width':'auto',
-			        'overflow':'none',
-			        'white-space':'normal',
-					'display':'inline-block'
-			 	})
-
-
-
-				$(this).css({
-				   'display':'none'
-				});
-
-
-				searchParagraph.children('p').click(function(){
-					searchParagraph.children('p').css({
-						 'height': '50px',
-			        	//'width':'60%',
-			        	'overflow':'hidden',
-			        	'white-space':'nowrap'
 					});
 
 
-					$('.more').css({
-					    'display':'block'
-					 });
-				});
+					 $("#btn-showMore").on('click',function() {
+
+					 				var receiverId = $('#receiver_id').val();
+
+							
+									$.ajax({
+												url:'/MessageBoard/messages/loadMoreMessageDetails',
+												type:'POST',
+												dataType: 'JSON',
+												data: {
+													"start":start,
+													"limit":limit,
+													"receiverId":receiverId
+												},
+												success:function(response)  
+												{  
+																var len = response.length;
+
+															
+																start = start + limit;	
+
+													
+
+																$('#startSql').val(start);
+
+																if(len == 0){
+																	$('div #btn-showMore').css({
+																		'display':'none'
+																	});
+
+																	$(errorShowMessage).append('<p style="display:block">No more message to load! </p>');
+
+																}
+
+																for(var i =0 ; i < len ; i++){
+
+																	var str = "";
+																	var messageContent = response[i].Message.content;
+																	var messageLength = messageContent.length;
+																	var messageId = response[i].Message.id;
+
+																	if (receiverId != response[i].Message.from_id){
+																						str = str + 
+																						'<li style="height:auto;width:70%;border:1px solid black;margin-top:1%;margin-bottom:1%;display:inline-block;margin-left:0px;margin-right:0px"'
+																						+ 'class="messageDiv"' + 'fade-id="' + messageId + '">' +
+																						'<img class="img_btn"' + "data-id='"+response[i].SenderJoin.sid+"'" + 
+
+															
+
+																						'src="/MessageBoard/img/profile/' + response[i].SenderJoin.simage + '" '  + 
+
+																						"style='width:100px;height:100px;float:left;'>" + 
+
+																						'<p style="margin:3%;display:inline-block;width:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" class="message_div"' + 
+
+																						'fade-id="' + messageId + '">' + response[i].Message.content + '';
 
 
-				// $('.less').css({
-				//    'display':'block'
-				// });
+																						if(messageLength > 300){
+																								str = str +  '<a class="more" href="#" ' + 
+																								'data-id="' + messageId + '"' + ' style="text-align:left;display:block;margin:3%;"' + '> Read more..</a>';
+																						}
+
+
+																						str = str + '</p>';
+
+																						str = str + 
+
+																						'<hr>' + '<span style="text-align:right;margin-right:10px;float:right;margin-top:1.5%;">' + response[i].Message.created + '</span>' + 
+
+																						'<button class="btn_user_sender"' + ' data-id="' + response[i].Message.id + '"' + 
+
+																						'style="display:inline-block;margin-left:2%;margin-top:1.5%;margin-bottom:1%;">' + 'Delete Message </button>';
+
+																						str = str + '</li>'
+
+
+																	}else{
+																		
+
+																						str = str + 
+
+																						'<li style="height:auto;width:70%;border:1px solid black;margin-top:1%;margin-bottom:1%;display:inline-block;margin-left:0px;margin-right:0px"'
+																						+ 'class="messageDiv specialLiRight"' + 'fade-id="' + messageId + '">' +
+																						'<img class="img_btn"' + "data-id='"+receiverId+"'" + 
+
+
+
+																						'src="/MessageBoard/img/profile/' + response[i].SenderJoin.simage + '" '  + 
+
+																						"style='width:100px;height:100px;float:right;'>" + 
+
+																						'<p style="margin-top:3%;display:inline-block;width:inherit;text-align:right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"class="message_div"' + 
+
+																						'fade-id="' + messageId + '">' + response[i].Message.content + '</p>';
+
+																						 if(messageLength > 300){
+
+																							str = str +  '<a class="more" href="#" ' + 'data-id="' + messageId + '"' + 
+																							' style="text-align:left;display:inline-block;margin:3%;"' + 
+																							'> Read more..</a>';
+																						 }
+
+
+																						 str = str + 
+																						 '<hr>' + '<span style="text-align:left;margin-left:10px;float:left;margin-top:1.5%;">' +
+																						 	 response[i].Message.created + '</span>' + 
+																						'<button class="btn_user_sender"' + ' data-id="' + response[i].Message.id + '"' + 
+
+																						'style="display:inline-block;margin-right:2%;margin-top:1.5%;float:right;margin-bottom:1%;">' + 'Delete Message </button>'
+
+																						str = str + '</li>';
+																	}
+
+																	$("#userLists").append(str);
+
+																}
+
+
+												}
+																		
+									});
 
 
 
 
-		});
-
-		$('.less').click(function(e) {
-			 e.stopPropagation();
-
-			var message_id = $(this).attr('data-id');
-
-			var searchParagraph = $("div").find("[fade-id='" + message_id + "']"); 
-
-			searchParagraph.children('p').css({
-			        'height': '50px',
-			        //'width':'60%',
-			        'overflow':'hidden',
-			        'white-space':'nowrap'
-			 })
-
-			$('.more').css({
-			    'display':'inline-block'
-			 })
-
-			$('.less').css({
-			    'display':'none'
-			 })
+			        });
 
 
+	
 
-		});
+
+					$("#userLists").on('click','.btn_user_sender',function(ev) {
+
+
+					
+
+									var message_id = $(this).attr('data-id');
+
+									var searchDiv = $("div").find("[fade-id='" + message_id + "']"); 
+
+									 $.ajax({
+											url:'/MessageBoard/messages/deleteSingleMessage',
+											    type:'POST',
+											    data:{
+										      "messageId":message_id,
+										    },
+										 	success:function(data)  
+									        {  	
+									        	searchDiv.fadeOut();
+									           	//window.location.reload();
+									        }  
+									});
+					});
+
+
+
+		
+
+					$("#userLists").on('click','.img_btn',function() {
+
+									var user_id = $(this).attr('data-id');
+
+									document.location.href = "/MessageBoard/users/profile/" + user_id;
+
+					});
+
+
+
+					$("#userLists").on('click','.more',function(e) {
+
+					 				e.stopPropagation();
+					
+									var message_id = $(this).attr('data-id');
+
+									var searchParagraph = $("div").find("[fade-id='" + message_id + "']"); 
+								
+									var searchBtn = $('a').find("[data-id='" + message_id + "']"); 
+
+									searchParagraph.children('p').css({
+								 		'height': 'auto',
+								        //'width':'auto',
+								        'overflow':'none',
+								        'white-space':'normal',
+										'display':'inline-block'
+								 	})
+
+									$(this).css({
+									   'display':'none'
+									});
+
+
+									searchParagraph.children('p').click(function(){
+										searchParagraph.children('p').css({
+											 'height': '50px',
+								        	//'width':'60%',
+								        	'overflow':'hidden',
+								        	'white-space':'nowrap'
+										});
+
+
+										$('.more').css({
+										    'display':'block'
+										 });
+									});
+
+					});
 
 
 
