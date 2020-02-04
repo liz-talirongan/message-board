@@ -1,4 +1,4 @@
-<h2>Login</h2>
+<h2>Login Edited</h2>
 <?php 
 				echo $this->Form->create('User');
 				echo $this->Form->input('email');
