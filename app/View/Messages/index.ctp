@@ -8,9 +8,9 @@
 ?>
 
 
- <?php $arraySize = sizeof($messages_list_all); ?>
 
-<input type="hidden" value="<?php echo $arraySize ?>" id="arrSize">
+
+<input type="hidden" value="<?php echo $messages_list_all ?>" id="arrSize">
 
 <div class="users messageDivParent">
 
@@ -78,7 +78,7 @@
 				</ul>
 
 				
-			    <?php if ($arraySize > 4): ?>
+			    <?php if ($messages_list_all > 4): ?>
 			
 					<div class="divShowMoreBtn">				
 							<a href="#" id="btn-showMore">Show more</a>
