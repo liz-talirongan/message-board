@@ -14,87 +14,97 @@
 
 					public function index(){	
 
+									$this->set('messages_list',self::getConversation('list',0,4));
 
-									$hsd = "";
+									$this->set('messages_list_all',self::getConversation('count',0,0));
+
+									$this->set('userId',$this->Auth->user('id'));
+
+					}
+
+
+
+					private function getConversation($type,$start,$limit)
+					{
 						
 
-									$message_list = $this->Message->find('all', array(
-										'fields' => array(
-											'UserJoin.name as rname',
-											'UserJoin.id as rid',
-											'SenderJoin.name as sname',
-											'SenderJoin.id as sid',
-											'SenderJoin.image as simage',
-											'UserJoin.image as rimage', 
-											'Message.to_id',
-											'Message.from_id',
-											'Message.content',
-											'Message.created',
-											'Message.id',
-											"LEAST(Message.to_id,Message.from_id) as id1",
-											"GREATEST(Message.to_id,Message.from_id) as id2",
-											"MAX(Message.id) AS max_id"
-										),
-										'joins' => array(
+							$conditions = array();
+
+							$result;
+
+							$findType = 'all';
+
+							switch ($type) {
+								case 'count':
+
+									$findType = 'count';
+									
+									$conditions['joins'] =  array(
 											array(
-												'table' => 'users',
-												'alias' => 'UserJoin',
-												'type' => 'LEFT',
+												'table' => 'messages',
+												'alias' => 'Message1',
+												'type' => 'INNER',
 												'conditions' => array(
-													'UserJoin.id = Message.to_id'
-												)
-											),
-											array(
-												'table' => 'users',
-												'alias' => 'SenderJoin',
-												'type' => 'LEFT',
-												'conditions' => array(
-													'SenderJoin.id = Message.from_id'
+													'LEAST(Message.to_id,Message.from_id) = LEAST(Message1.to_id,Message1.from_id)',
+													'GREATEST(Message.to_id,Message.from_id) = GREATEST(Message1.to_id,Message1.from_id)'
 												)
 											)
-										),
-										'conditions' => array(
+									);
+
+									$conditions['conditions'] = array(
 											'OR' => array(
 												array('Message.to_id' => $this->Auth->user('id')),
 												array('Message.from_id' => $this->Auth->user('id'))
 											)
-										),	
-										'group' => array('id1','id2'),
-										'order' => array('Message.id' => 'DESC')
-									));
+									);
 
+									$conditions['group'] = array('LEAST(Message.to_id,Message.from_id)','GREATEST(Message.to_id,Message.from_id)');
+
+									$result = $this->Message->find($findType,$conditions);
+
+									break;
+
+								case 'list':
 
 									$userId = $this->Auth->user('id');
 
-									$queryStr = "
-											SELECT UserJoin.name AS rname, UserJoin.id AS rid, SenderJoin.name AS sname,SenderJoin.id AS sid, SenderJoin.image AS simage, UserJoin.image AS rimage, 
-											Message.to_id, Message.from_id, Message.content, Message.created, Message.id, 
-											LEAST(Message.to_id,Message.from_id) as id1, 
-											GREATEST(Message.to_id,Message.from_id) as id2, 
-											MAX(Message.id) AS max_id 
+									$query1 = "SELECT 
+													UserJoin.name AS rname, UserJoin.id AS rid, 
+													SenderJoin.name AS sname,SenderJoin.id AS sid,
+													SenderJoin.image AS simage, UserJoin.image AS rimage, 
+													Message.to_id, Message.from_id, Message.content, 
+													Message.created, Message.id, 
+													LEAST(Message.to_id,Message.from_id) as id1, 
+													GREATEST(Message.to_id,Message.from_id) as id2, 
+													MAX(Message.id) AS max_id 
 											FROM  messages AS Message 
-											INNER JOIN(SELECT id,to_id,from_id,content,MAX(id) as max_id,LEAST(to_id,from_id) as id3,GREATEST(to_id,from_id) AS id4 from messages GROUP BY id3,id4 ORDER BY max_id) AS Message1
-											ON(Message.id = Message1.max_id)
 											LEFT JOIN users AS UserJoin ON (UserJoin.id = Message.to_id) 
 											LEFT JOIN users AS SenderJoin ON (SenderJoin.id = Message.from_id) 
+											INNER JOIN(
+												SELECT 
+													MAX(id) as max_id,LEAST(to_id,from_id) as id3,GREATEST(to_id,from_id) AS id4 
+													from messages 
+													GROUP BY id3,id4 
+													ORDER BY max_id
+											) AS Message1
+												ON(Message.id = Message1.max_id)
 											WHERE ((Message.to_id = {$userId}) OR (Message.from_id = {$userId})) 
 											GROUP BY id1, id2 
-											ORDER BY Message.id DESC LIMIT 4
-									";
+											ORDER BY Message.id  DESC
+											LIMIT {$start},{$limit}";
+
+									$result = $this->Message->query($query1);
+
+
+									break;
+							}
 
 
 
-									 $message_list_limit_new = $this->Message->query($queryStr);
 
 
-
-									$this->set('messages_list',$message_list_limit_new);
-
-									$this->set('messages_list_all',$message_list);
-
-									$this->set('userId',$this->Auth->user('id'));
-
-
+							return $result;
+						
 					}
 
 
@@ -108,30 +118,12 @@
 
 													$start = $this->request->data['start'];
 
-													$userId = $this->Auth->user('id');
-
-													$queryStr = "
-																SELECT UserJoin.name AS rname, UserJoin.id AS rid, SenderJoin.name AS sname,SenderJoin.id AS sid, SenderJoin.image AS simage, UserJoin.image AS rimage, 
-																Message.to_id, Message.from_id, Message.content, Message.created, Message.id, 
-																LEAST(Message.to_id,Message.from_id) as id1, 
-																GREATEST(Message.to_id,Message.from_id) as id2, 
-																MAX(Message.id) AS max_id 
-																FROM  messages AS Message 
-																INNER JOIN(SELECT id,to_id,from_id,content,MAX(id) as max_id,LEAST(to_id,from_id) as id3,GREATEST(to_id,from_id) AS id4 from messages GROUP BY id3,id4 ORDER BY max_id) AS Message1
-																ON(Message.id = Message1.max_id)
-																LEFT JOIN users AS UserJoin ON (UserJoin.id = Message.to_id) 
-																LEFT JOIN users AS SenderJoin ON (SenderJoin.id = Message.from_id) 
-																WHERE ((Message.to_id = {$userId}) OR (Message.from_id = {$userId})) 
-																GROUP BY id1, id2 
-																ORDER BY Message.id DESC LIMIT {$start},10
-													";
 
 
+									 				$message_list_limit_new = self::getConversation('list',$start,10);
 
-									 				$message_list_limit_new = $this->Message->query($queryStr);
 
-
-													echo json_encode($message_list_limit_new);
+													return json_encode($message_list_limit_new);
 
 
 									}
@@ -141,103 +133,75 @@
 
 					}
 
+					private function getReceiverId($userId,$userId1){
+
+						$result = $userId1;
+
+						return $this->Auth->user('id') != $userId ? $userId : $userId1;
+					}
+
+					private function getMessageDetails($receiverId,$senderId,$type,$start,$limit){
+
+						$findType = 'all';
+						$conditions = array(
+												'joins' => array(
+													array(
+														'table' => 'users',
+														'alias' => 'UserJoin',
+														'type' => 'LEFT',
+														'conditions' => array(
+															'UserJoin.id = Message.to_id',
+														)
+													),
+													array(
+														'table' => 'users',
+														'alias' => 'SenderJoin',
+														'type' => 'LEFT',
+														'conditions' => array(
+															'SenderJoin.id = Message.from_id'
+														)
+													)
+												),
+												'conditions' => array(
+													'OR' => array(					
+																array(
+																	'Message.to_id' => $receiverId,
+																	'Message.from_id' => $senderId
+																),
+																array(
+																	'Message.to_id' => $senderId,
+																	'Message.from_id' => $receiverId
+																)
+													)
+												),			
+												'order' => array('Message.created' => 'DESC','Message.id' => 'DESC'),
+												'fields' => array('UserJoin.name as rname','UserJoin.id as rid','SenderJoin.name as sname','SenderJoin.id as sid','SenderJoin.image as simage','UserJoin.image as rimage','Message.id','Message.from_id','Message.to_id','Message.content','Message.created')
+										
+						);
+
+						if ($type == 'list') {
+							$conditions['offset'] = $start;
+
+							$conditions['limit'] = $limit;
+ 						}else{
+
+ 							$findType = 'count';
+ 						}
+
+
+						return $this->Message->find($findType,$conditions);
+
+
+					}
 
 					public function messageDetails($receiverId,$senderId)
 					{
 
-									$receiver = 0;
+									$this->set('meid',self::getReceiverId($receiverId,$senderId));
 
+									$this->set('messages_list',self::getMessageDetails($receiverId,$senderId,'list',0,4));
 
-									if($this->Auth->user('id') != $receiverId){
-										$receiver = $receiverId;
-
-									}else{
-										$receiver = $senderId;
-									}
-
-							
-						
-									$my_list = $this->Message->find('all', array(
-												'joins' => array(
-													array(
-														'table' => 'users',
-														'alias' => 'UserJoin',
-														'type' => 'LEFT',
-														'conditions' => array(
-															'UserJoin.id = Message.to_id',
-														)
-													),
-													array(
-														'table' => 'users',
-														'alias' => 'SenderJoin',
-														'type' => 'LEFT',
-														'conditions' => array(
-															'SenderJoin.id = Message.from_id'
-														)
-													)
-												),
-												'conditions' => array(
-													'OR' => array(					
-																array(
-																	'Message.to_id' => $receiverId,
-																	'Message.from_id' => $senderId
-																),
-																array(
-																	'Message.to_id' => $senderId,
-																	'Message.from_id' => $receiverId
-																)
-													)
-												),			
-												//'group' => array('UserJoin.name','SenderJoin.name'),
-												'order' => array('Message.created' => 'DESC','Message.id' => 'DESC'),
-												'fields' => array('UserJoin.name as rname','UserJoin.id as rid','SenderJoin.name as sname','SenderJoin.id as sid','SenderJoin.image as simage','UserJoin.image as rimage','Message.id','Message.from_id','Message.to_id','Message.content','Message.created'),
-												'limit' => 4
-										
-									));	
-
-									$my_list_all = $this->Message->find('all', array(
-												'joins' => array(
-													array(
-														'table' => 'users',
-														'alias' => 'UserJoin',
-														'type' => 'LEFT',
-														'conditions' => array(
-															'UserJoin.id = Message.to_id',
-														)
-													),
-													array(
-														'table' => 'users',
-														'alias' => 'SenderJoin',
-														'type' => 'LEFT',
-														'conditions' => array(
-															'SenderJoin.id = Message.from_id'
-														)
-													)
-												),
-												'conditions' => array(
-													'OR' => array(					
-																array(
-																	'Message.to_id' => $receiverId,
-																	'Message.from_id' => $senderId
-																),
-																array(
-																	'Message.to_id' => $senderId,
-																	'Message.from_id' => $receiverId
-																)
-													)
-												),			
-												//'group' => array('UserJoin.name','SenderJoin.name'),
-												'order' => array('Message.created' => 'DESC','Message.id' => 'DESC'),
-												'fields' => array('UserJoin.name as rname','UserJoin.id as rid','SenderJoin.name as sname','SenderJoin.id as sid','SenderJoin.image as simage','UserJoin.image as rimage','Message.id','Message.from_id','Message.to_id','Message.content','Message.created')
-										
-									));	
-
-
-									$this->set('meid',$receiver);
-
-									$this->set('messages_list',$my_list);
-
-									$this->set('messages_list_all',$my_list_all);
+									$this->set('messages_list_all',self::getMessageDetails($receiverId,$senderId,'count',0,0));
 
 
 					}
@@ -334,45 +298,11 @@
 
 													$authId = $this->Auth->user('id');
 
-													$my_list = $this->Message->find('all', array(
-															'joins' => array(
-																array(
-																	'table' => 'users',
-																	'alias' => 'UserJoin',
-																	'type' => 'LEFT',
-																	'conditions' => array(
-																		'UserJoin.id = Message.to_id',
-																	)
-																),
-																array(
-																	'table' => 'users',
-																	'alias' => 'SenderJoin',
-																	'type' => 'LEFT',
-																	'conditions' => array(
-																		'SenderJoin.id = Message.from_id'
-																	)
-																)
-															),
-															'conditions' => array(
-																'OR' => array(					
-																			array(
-																				'Message.to_id' => $receiverId,
-																				'Message.from_id' => $authId
-																			),
-																			array(
-																				'Message.to_id' => $authId,
-																				'Message.from_id' => $receiverId
-																			)
-																)
-															),			
-															'order' => array('Message.created' => 'DESC','Message.id' => 'DESC'),
-															'fields' => array('UserJoin.name as rname','UserJoin.id as rid','SenderJoin.name as sname','SenderJoin.id as sid','SenderJoin.image as simage','UserJoin.image as rimage','Message.id','Message.from_id','Message.to_id','Message.content','Message.created'),
-															'offset' => $this->request->data['start'],
-															'limit' => 10,
-														
-													));	
+													$start = $this->request->data['start'];
 
-													echo json_encode($my_list);
+													$my_list = self::getMessageDetails($receiverId,$authId,'list',$start,10);
+
+													return  json_encode($my_list);
 									}
 					}
 

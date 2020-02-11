@@ -5,7 +5,6 @@
  
 ?>
 
-<?php $arraySize = sizeof($messages_list_all); ?>
 
 <div id='errorMessage' style="color:red;font-size:18px;"></div>
 
@@ -133,7 +132,7 @@
 
 					</ul>
 
-					<?php if ($arraySize > 4): ?>
+					<?php if ($messages_list_all > 4): ?>
 							<div style="margin:0 auto;width:70%;display:block;">
 										
 										<a href="#" id="btn-showMore" style="display:block;">Show more</a>
