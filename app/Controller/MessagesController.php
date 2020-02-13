@@ -117,15 +117,17 @@
 
 
 													$start = $this->request->data['start'];
+													$limit = $this->request->data['limit'];
 
 
+									 				$message_list = self::getConversation('list',$start,$limit);
 
-									 				$message_list_limit_new = self::getConversation('list',$start,10);
+									 				if (sizeof($message_list) != 0) {
+														$this->set('message_list',$message_list);
+														$this->render('/Elements/conversation');
+													}
 
-
-													return json_encode($message_list_limit_new);
-
-
+													return json_encode("no_more");
 									}
 
 
@@ -199,7 +201,6 @@
 
 									$this->set('meid',self::getReceiverId($receiverId,$senderId));
 
-									$this->set('messages_list',self::getMessageDetails($receiverId,$senderId,'list',0,4));
 
 									$this->set('messages_list_all',self::getMessageDetails($receiverId,$senderId,'count',0,0));
 
@@ -300,9 +301,17 @@
 
 													$start = $this->request->data['start'];
 
-													$my_list = self::getMessageDetails($receiverId,$authId,'list',$start,10);
+													$limit = $this->request->data['limit'];
 
-													return  json_encode($my_list);
+													$my_list = self::getMessageDetails($receiverId,$authId,'list',$start,$limit);
+
+													if (sizeof($my_list) != 0) {
+														$this->set('message_list',$my_list);
+														$this->render('/Elements/details');
+
+													}
+
+													return  json_encode("no_more");
 									}
 					}
 
