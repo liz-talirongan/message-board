@@ -26,7 +26,7 @@
 
 															<?php if ($sLength > 300): ?>
 
-																<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>">Read more </a>
+																<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>">Read More</a>
 																<a class="less" href="#"  style="display:none;" data-id="<?php echo $message['Message']['id'] ?>">Show less</a>
 
 															<?php endif; ?>
@@ -67,8 +67,7 @@
 
 															<?php if ($sLength > 300): ?>
 
-																	<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>" style="text-align:left;display:block;margin:3%;">Read more
-																	 </a>
+																	<a class="more" href="#"  data-id="<?php echo $message['Message']['id'] ?>" style="text-align:left;display:block;margin:3%;">Read More</a>
 															
 
 

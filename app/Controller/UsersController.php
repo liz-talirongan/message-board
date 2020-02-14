@@ -8,6 +8,13 @@
 									parent::beforeFilter();
 									$this->Auth->allow('register','success');
 									$this->Auth->autoRedirect = false;
+
+									
+									  // Check if already logged in
+					            if (in_array($this->request->action, ['login', 'register']) && !empty($this->Auth->user('id'))) {
+					                $this->Session->setFlash('Permission denied! You are already logged in');
+					                $this->redirect('/');
+					            }
 					}
 
 
