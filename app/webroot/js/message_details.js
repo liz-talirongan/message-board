@@ -50,13 +50,7 @@
 			        });
 
 
-	
-
-
 					$("#userLists").on('click','.btn_user_sender',function(ev) {
-
-
-					
 
 									var message_id = $(this).attr('data-id');
 
@@ -71,14 +65,11 @@
 										 	success:function(data)  
 									        {  	
 									        	searchDiv.fadeOut();
-									           	//window.location.reload();
 									        }  
 									});
 					});
 
 
-
-		
 
 					$("#userLists").on('click','.img_btn',function() {
 
@@ -92,40 +83,6 @@
 
 					$("#userLists").on('click','.more',function(e) {
 
-					 			// 	e.stopPropagation();
-					
-									// var message_id = $(this).attr('data-id');
-
-									// var searchParagraph = $("div").find("[fade-id='" + message_id + "']"); 
-								
-									// var searchBtn = $('a').find("[data-id='" + message_id + "']"); 
-
-									// searchParagraph.children('p').css({
-								 // 		'height': 'auto',
-					
-								 //        'overflow':'none',
-								 //        'white-space':'normal',
-									// 	'display':'inline-block'
-								 // 	})
-
-									// $(this).css({
-									//    'display':'none'
-									// });
-
-
-									// searchParagraph.children('p').click(function(){
-									// 	searchParagraph.children('p').css({
-									// 		 'height': '50px',
-			
-								 //        	'overflow':'hidden',
-								 //        	'white-space':'nowrap'
-									// 	});
-
-
-									// 	$('.more').css({
-									// 	    'display':'block'
-									// 	 });
-									// });
 
 									var message_id = $(this).attr('data-id');
 
